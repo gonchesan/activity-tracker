@@ -1,7 +1,7 @@
 import { Activity } from '@/interface/activity';
 import { activityService } from '@/services/activity';
-import { getUserId, supabase } from '@/services/supabase';
-import React, { Children } from 'react';
+import { getUserId } from '@/services/supabase';
+import React from 'react';
 // import { useAuth } from './AuthContext';
 import { dateService } from '@/services/date';
 

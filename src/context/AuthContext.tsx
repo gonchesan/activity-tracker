@@ -30,6 +30,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
 
     React.useEffect(() => {
         const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+            console.log(event);
             if (session == undefined) {
                 navigate('/login', { replace: true });
             } else {
