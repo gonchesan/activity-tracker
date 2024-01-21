@@ -1,0 +1,96 @@
+import React from 'react';
+
+import useAuth from '@/hooks/useAuth';
+
+import { dateService } from '@/services/date';
+
+import Table from '@/components/ui/Table';
+import Modal from '@/components/ui/Modal';
+import ActivityForm from '@/components/ui/ActivityForm';
+import useActivity from '@/hooks/useActivity';
+import useForm from '@/hooks/useForm';
+
+const date = new Date();
+
+const ActivitiesPage: React.FC = () => {
+    const { user } = useAuth();
+    const { insertActivity } = useActivity();
+    const { getValues, setValues } = useForm();
+
+    const [modalStatus, setModalStatus] = React.useState({ create: false });
+
+    function openCreateModal() {
+        setModalStatus({ create: true });
+
+        const date = new Date();
+        const totalMinutes = date.getHours() * 60 + date.getMinutes();
+
+        setValues({ begin_time: dateService.formatMinutesAndHour(totalMinutes), end_time: '', description: '' });
+    }
+
+    function confirmCreate() {
+        const { begin_time, end_time, description } = getValues();
+
+        const timeSpan = dateService.getTimeSpan(begin_time, end_time);
+        const dateID = dateService.getCurrentDayFormated(date);
+        const createdDate = new Date();
+
+        const [hours, minutes] = begin_time.split(':');
+
+        createdDate.setHours(hours);
+        createdDate.setMinutes(minutes);
+
+        const params = {
+            begin_time: begin_time,
+            end_time: end_time,
+            description: description,
+            created_date: createdDate.toISOString(),
+            time_span: timeSpan,
+            date_id: dateID,
+            user_id: user.id,
+        };
+
+        insertActivity(params)
+            .then(response => {
+                if (!response?.error) {
+                    setValues({
+                        begin_time: '',
+                        end_time: '',
+                        description: '',
+                    });
+                    setModalStatus({ create: false });
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    return (
+        <section className="container mx-auto ">
+            {/* selector of day - calendar */}
+            Today is: {dateService.getCurrentDayFormated(date)}
+            <button className=" py-1.5 px-2 rounded-lg bg-indigo-500 text-white" onClick={openCreateModal}>
+                + Add activity
+            </button>
+            {/* render list */}
+            {user && <Table />}
+            <Modal
+                isOpen={modalStatus.create}
+                onClose={() => setModalStatus({ ...modalStatus, create: false })}
+                className={'w-3/12'}
+                onCancel={() => setModalStatus({ ...modalStatus, create: false })}
+                onConfirm={confirmCreate}
+                confirmText={'Create'}
+                confirmClassName={'bg-indigo-500 text-white'}
+                cancelButton={null}
+            >
+                <div className="mb-6">
+                    <ActivityForm />
+                </div>
+            </Modal>
+        </section>
+    );
+};
+
+export default ActivitiesPage;
