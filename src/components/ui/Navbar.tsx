@@ -5,7 +5,7 @@ import React from 'react';
 const Navbar: React.FC = () => {
     const { signOut, user } = useAuth();
 
-    return (
+    return user ? (
         <nav className="fixed flex-no-wrap flex w-full py-3 items-center justify-between bg-[#FBFBFB]  shadow-md shadow-black/5 dark:bg-neutral-600 dark:shadow-black/10 lg:flex-wrap lg:justify-start lg:py-2">
             <div className="flex w-full flex-wrap items-center justify-between px-3">
                 <button
@@ -94,19 +94,25 @@ const Navbar: React.FC = () => {
                             data-te-dropdown-toggle-ref
                             aria-expanded="false"
                         >
-                            <img
-                                src={user.avatar_url}
-                                className="rounded-full"
-                                style={{ height: '25px', width: '25px' }}
-                                alt=""
-                                loading="lazy"
-                            />
+                            {user.picture ? (
+                                <img
+                                    src={user.picture}
+                                    className="rounded-full"
+                                    style={{ height: '25px', width: '25px' }}
+                                    alt=""
+                                    loading="lazy"
+                                />
+                            ) : (
+                                <div className="rounded-full w-[30px] h-[30px] bg-indigo-400 text-white grid place-content-center">
+                                    {user.email?.toUpperCase()[0]}
+                                </div>
+                            )}
                         </button>
                     </div>
                 </div>
             </div>
         </nav>
-    );
+    ) : null;
 };
 
 export default Navbar;
