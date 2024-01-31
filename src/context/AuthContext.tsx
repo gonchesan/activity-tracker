@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserMetadata } from '@supabase/supabase-js';
 import { supabase } from '@/services/supabase';
 
-import { AuthProviderProps } from '@/interface/auth';
+import { AuthProviderProps, SignInType } from '@/interface/auth';
 
 export const AuthContext = React.createContext<AuthProviderProps | undefined>(undefined);
 
@@ -28,13 +28,36 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
         if (error) throw new Error('A ocurrido un error durante el cierre de sesión');
     }
 
+    async function signInWithEmail(params: SignInType) {
+        const { email, password } = params;
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        return { data, error };
+    }
+    async function signUpNewUser(params: SignInType) {
+        const { email, password } = params;
+
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                emailRedirectTo: '/',
+            },
+        });
+
+        return { data, error };
+    }
+
     React.useEffect(() => {
         const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-            console.log(event);
             if (session == undefined) {
                 navigate('/login', { replace: true });
             } else {
-                setUser({ ...session?.user.user_metadata, id: session?.user.id });
+                setUser({ ...session?.user, ...session?.user.user_metadata, id: session?.user.id });
                 navigate('/', { replace: true });
             }
         });
@@ -43,5 +66,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
         };
     }, []);
 
-    return <AuthContext.Provider value={{ signInWithGoogle, signOut, user }}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={{ signUpNewUser, signInWithEmail, signInWithGoogle, signOut, user }}>{children}</AuthContext.Provider>
+    );
 };
