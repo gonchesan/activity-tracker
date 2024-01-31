@@ -78,7 +78,7 @@ const ActivitiesPage: React.FC = () => {
             <Modal
                 isOpen={modalStatus.create}
                 onClose={() => setModalStatus({ ...modalStatus, create: false })}
-                className={'w-3/12'}
+                className={'lg:w-4/12 md:w-8/12 sm:w-10/12 w-10/12'}
                 onCancel={() => setModalStatus({ ...modalStatus, create: false })}
                 onConfirm={confirmCreate}
                 confirmText={'Create'}
