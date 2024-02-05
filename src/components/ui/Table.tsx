@@ -92,7 +92,7 @@ const Table: React.FC = () => {
             <Modal
                 isOpen={modalStatus.delete}
                 onClose={() => setModalStatus({ ...modalStatus, delete: false })}
-                className={'w-3/12'}
+                className={'lg:w-4/12 md:w-8/12 sm:w-10/12 w-10/12'}
                 onCancel={() => setModalStatus({ ...modalStatus, delete: false })}
                 onConfirm={confirmDelete}
                 confirmText={'Delete'}
@@ -102,7 +102,7 @@ const Table: React.FC = () => {
             <Modal
                 isOpen={modalStatus.edit}
                 onClose={() => setModalStatus({ ...modalStatus, edit: false })}
-                className={'w-3/12'}
+                className={'lg:w-4/12 md:w-8/12 sm:w-10/12 w-10/12'}
                 onCancel={() => setModalStatus({ ...modalStatus, edit: false })}
                 onConfirm={confirmEdit}
                 confirmText={'Update'}

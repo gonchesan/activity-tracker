@@ -1,13 +1,11 @@
-import React from 'react';
-
 import useAuth from '@/hooks/useAuth';
 import useForm from '@/hooks/useForm';
-
 import { SignInType } from '@/interface/auth';
-import { Link, NavLink } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const LoginPage: React.FC = () => {
-    const { signInWithEmail, signInWithGoogle } = useAuth();
+const RegisterPage: React.FC = () => {
+    const { signUpNewUser, signInWithGoogle } = useAuth();
     const { formData, handleInputChange, getValues, setValues } = useForm();
 
     function handleSubmit(event: React.FormEvent) {
@@ -16,7 +14,14 @@ const LoginPage: React.FC = () => {
 
         // Add another validations
         if (email && password) {
-            signInWithEmail(getValues());
+            signUpNewUser(getValues())
+                .then(response => {
+                    // show toast to check the email instead of navigate
+                    // if (response.data.user?.aud) navigate('/');
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
     React.useEffect(() => {
@@ -38,7 +43,7 @@ const LoginPage: React.FC = () => {
                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                         alt="Your Company"
                     />
-                    <h2 className="text-center text-lg">Sign in to your account</h2>
+                    <h2 className="text-center text-lg">Create account</h2>
 
                     <form className="mt-6 grid grid-cols-4 gap-4 grid-flow-row-dense" onSubmit={handleSubmit}>
                         <div className="col-span-4">
@@ -68,11 +73,8 @@ const LoginPage: React.FC = () => {
                             </div>
                         </div>
                         <div className="col-span-4">
-                            <button
-                                type="submit"
-                                className="w-full mt-2 px-4 py-1.5 justify-center rounded-md bg-indigo-600 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 font-medium"
-                            >
-                                Login
+                            <button className="w-full mt-2 px-4 py-1.5 justify-center rounded-md bg-indigo-600 text-sm leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 font-medium">
+                                Create
                             </button>
                         </div>
                     </form>
@@ -88,6 +90,7 @@ const LoginPage: React.FC = () => {
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                         <button
                             onClick={signInWithGoogle}
+                            type="button"
                             className="w-full flex items-center px-3 py-1.5 justify-center rounded-md bg-gray-50 text-sm leading-6 text-gray-600 shadow-sm hover:bg-gray-100 transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 border-solid ring-slate-300 ring-1"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" height="16" width="15.25" viewBox="0 0 488 512">
@@ -100,10 +103,10 @@ const LoginPage: React.FC = () => {
                         </button>
                     </div>
                     <p className="mt-6 text-xs text-center text-gray-500">
-                        Don't have an account?
-                        <NavLink to="/register" className="ml-1 font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                            Register here
-                        </NavLink>
+                        Already a user?
+                        <Link to="/login" className="ml-1 font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                            Login
+                        </Link>
                     </p>
                 </div>
             </section>
@@ -111,4 +114,4 @@ const LoginPage: React.FC = () => {
     );
 };
 
-export default LoginPage;
+export default RegisterPage;

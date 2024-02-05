@@ -1,13 +1,15 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { AuthContextProvider } from './context/AuthContext';
-import { ActivityProvider } from './context/ActivityContext';
+import { AuthContextProvider } from '@/context/AuthContext';
+import { ActivityProvider } from '@/context/ActivityContext';
+import { FormProvider } from '@/context/FormContext';
 
-import ActivitiesPage from './pages/Activities';
-import LoginPage from './pages/Login';
-import ErrorPage from './pages/Error';
-import Layout from './components/ui/Layout';
-import { FormProvider } from './context/FormContext';
+import Layout from '@/components/ui/Layout';
+
+import ActivitiesPage from '@/pages/Activities';
+import LoginPage from '@/pages/Login';
+import ErrorPage from '@/pages/Error';
+import RegisterPage from '@/pages/Register';
 
 function App() {
     return (
@@ -25,7 +27,22 @@ function App() {
                         }
                     />
                 </Route>
-                <Route path="/login" element={<LoginPage />} />
+                <Route
+                    path="/login"
+                    element={
+                        <FormProvider>
+                            <LoginPage />
+                        </FormProvider>
+                    }
+                />
+                <Route
+                    path="/register"
+                    element={
+                        <FormProvider>
+                            <RegisterPage />
+                        </FormProvider>
+                    }
+                />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
         </AuthContextProvider>
