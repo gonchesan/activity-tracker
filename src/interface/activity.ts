@@ -1,6 +1,6 @@
 import { PostgrestError } from '@supabase/supabase-js';
 
-export interface Activity {
+export type Activity = {
     id: string;
     begin_time: string;
     end_time: string;
@@ -9,9 +9,10 @@ export interface Activity {
     created_date: string;
     dateID: string;
     user_id: string;
-}
+    category: string;
+};
 
-export interface ActivityProviderProps {
+export type ActivityProviderProps = {
     activities: Activity[];
     getActivityList(dateID: string): Promise<void>;
     insertActivity(params: Partial<Activity>): Promise<
@@ -37,4 +38,4 @@ export interface ActivityProviderProps {
           }
         | undefined
     >;
-}
+};
