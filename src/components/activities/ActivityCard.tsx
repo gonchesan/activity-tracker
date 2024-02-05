@@ -1,7 +1,6 @@
 import { Activity } from '@/interface/activity';
 import { dateService } from '@/services/date';
 import React from 'react';
-import Button from '@/components/ui/Button';
 import useForm from '@/hooks/useForm';
 import Modal from '../ui/Modal';
 import ActivityForm from '../ui/ActivityForm';
@@ -10,7 +9,7 @@ import useActivity from '@/hooks/useActivity';
 type ActivityCardProps = { activity: Activity };
 
 const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
-    const { id, begin_time, description, end_time, time_span, category } = activity;
+    const { begin_time, description, end_time, time_span, category } = activity;
 
     // TODO Add function in the date service to add AM or PM
     // TODO create Icon component https://www.sanity.io/guides/import-svg-files-in-react
@@ -18,7 +17,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
     // TODO create ... button
 
     const { getValues, setValues } = useForm();
-    const { deleteActivity, editActivity, getActivityList, activities } = useActivity();
+    const { deleteActivity, editActivity } = useActivity();
 
     const [openDropdown, setOpenDropdown] = React.useState(false);
     const [activitySelected, setActivitySelected] = React.useState<Activity>();

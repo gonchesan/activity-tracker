@@ -16,6 +16,7 @@ const RegisterPage: React.FC = () => {
         if (email && password) {
             signUpNewUser(getValues())
                 .then(response => {
+                    console.log(response);
                     // show toast to check the email instead of navigate
                     // if (response.data.user?.aud) navigate('/');
                 })
