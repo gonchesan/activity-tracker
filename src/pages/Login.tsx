@@ -4,7 +4,7 @@ import useAuth from '@/hooks/useAuth';
 import useForm from '@/hooks/useForm';
 
 import { SignInType } from '@/interface/auth';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
     const { signInWithEmail, signInWithGoogle } = useAuth();

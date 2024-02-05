@@ -1,28 +1,25 @@
 import React from 'react';
-import ActivityForm from './ActivityForm';
+import ActivityForm from '../ui/ActivityForm';
 
 import { dateService } from '@/services/date';
-import Modal from './Modal';
+import Modal from '../ui/Modal';
 import { Activity } from '@/interface/activity';
 
 import useAuth from '@/hooks/useAuth';
 import useActivity from '@/hooks/useActivity';
 import useForm from '@/hooks/useForm';
+import ActivityCard from './ActivityCard';
 
 const Table: React.FC = () => {
     const { user } = useAuth();
     const { deleteActivity, editActivity, getActivityList, activities } = useActivity();
-    const { getValues, setValues } = useForm();
+    const { getValues } = useForm();
     const [modalStatus, setModalStatus] = React.useState({ edit: false, delete: false });
-    const [activitySelected, setActivitySelected] = React.useState<Activity>();
+    const [activitySelected] = React.useState<Activity>();
 
     function confirmDelete() {
         setModalStatus({ ...modalStatus, delete: false });
         deleteActivity(activitySelected!.id);
-    }
-    function openDeleteModal(activity: Activity) {
-        setActivitySelected(activity);
-        setModalStatus({ ...modalStatus, delete: true });
     }
 
     function confirmEdit() {
@@ -33,12 +30,6 @@ const Table: React.FC = () => {
                 }
             })
             .catch(error => console.log(error));
-    }
-    function openEditModal(activity: Activity) {
-        setActivitySelected(activity);
-        const { begin_time, end_time, description } = activity;
-        setValues({ begin_time: begin_time, end_time: end_time, description: description });
-        setModalStatus({ ...modalStatus, edit: true });
     }
 
     React.useEffect(() => {
@@ -64,25 +55,26 @@ const Table: React.FC = () => {
                 <tbody>
                     {activities &&
                         activities.map(activity => {
-                            const { id, begin_time, description, end_time, time_span } = activity;
+                            const { id } = activity;
                             return (
-                                <tr key={id}>
-                                    <td className="border border-slate-700 text-center">{begin_time}</td>
-                                    <td className="border border-slate-700 text-center">{end_time}</td>
-                                    <td className="border border-slate-700">{description}</td>
-                                    <td className="border border-slate-700 text-center">{dateService.formatMinutesAndHour(time_span)}</td>
-                                    <td className="border border-slate-700">
-                                        <button className=" py-1.5 px-2 rounded-lg bg-amber-500" onClick={() => openEditModal(activity)}>
-                                            Edit
-                                        </button>
-                                        <button
-                                            className=" py-1.5 px-2 rounded-lg bg-red-700 text-white"
-                                            onClick={() => openDeleteModal(activity)}
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
+                                <ActivityCard key={id} activity={activity} />
+                                // <tr key={id}>
+                                //     <td className="border border-slate-700 text-center">{begin_time}</td>
+                                //     <td className="border border-slate-700 text-center">{end_time}</td>
+                                //     <td className="border border-slate-700">{description}</td>
+                                //     <td className="border border-slate-700 text-center">{dateService.formatMinutesAndHour(time_span)}</td>
+                                //     <td className="border border-slate-700">
+                                //         <button className=" py-1.5 px-2 rounded-lg bg-amber-500" onClick={() => openEditModal(activity)}>
+                                //             Edit
+                                //         </button>
+                                //         <button
+                                //             className=" py-1.5 px-2 rounded-lg bg-red-700 text-white"
+                                //             onClick={() => openDeleteModal(activity)}
+                                //         >
+                                //             Delete
+                                //         </button>
+                                //     </td>
+                                // </tr>
                             );
                         })}
                 </tbody>

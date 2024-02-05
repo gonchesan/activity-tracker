@@ -4,17 +4,18 @@ import useAuth from '@/hooks/useAuth';
 
 import { dateService } from '@/services/date';
 
-import Table from '@/components/ui/Table';
+import Table from '@/components/activities/Table';
 import Modal from '@/components/ui/Modal';
 import ActivityForm from '@/components/ui/ActivityForm';
 import useActivity from '@/hooks/useActivity';
 import useForm from '@/hooks/useForm';
+import ActivityCard from '@/components/activities/ActivityCard';
 
 const date = new Date();
 
 const ActivitiesPage: React.FC = () => {
     const { user } = useAuth();
-    const { insertActivity } = useActivity();
+    const { insertActivity, activities, getActivityList } = useActivity();
     const { getValues, setValues } = useForm();
 
     const [modalStatus, setModalStatus] = React.useState({ create: false });
@@ -66,15 +67,28 @@ const ActivitiesPage: React.FC = () => {
             });
     }
 
+    React.useEffect(() => {
+        const date = new Date();
+
+        const dateID = dateService.getCurrentDayFormated(date);
+
+        user.id && getActivityList(dateID);
+    }, [user.id]);
+
     return (
-        <section className="container mx-auto ">
+        <section className="container mx-auto my-2 mr-2 rounded-lg bg-gray-200">
             {/* selector of day - calendar */}
             Today is: {dateService.getCurrentDayFormated(date)}
             <button className=" py-1.5 px-2 rounded-lg bg-indigo-500 text-white" onClick={openCreateModal}>
                 + Add activity
             </button>
-            {/* render list */}
-            {user && <Table />}
+            {user && activities.length ? (
+                <>
+                    {activities.map(activity => (
+                        <ActivityCard key={activity.id} activity={activity} />
+                    ))}
+                </>
+            ) : null}
             <Modal
                 isOpen={modalStatus.create}
                 onClose={() => setModalStatus({ ...modalStatus, create: false })}

@@ -2,16 +2,14 @@ import React from 'react';
 
 import { Outlet } from 'react-router-dom';
 
-import Navbar from './Navbar';
+import Sidebar from './Sidebar';
 
 const Layout: React.FC = () => {
     return (
-        <>
-            <Navbar />
-            <section className="container mx-auto px-4 pt-14 lg:pt-12">
-                <Outlet />
-            </section>
-        </>
+        <div className="mx-auto h-screen w-screen overflow-hidden bg-white flex">
+            <Sidebar />
+            <Outlet />
+        </div>
     );
 };
 

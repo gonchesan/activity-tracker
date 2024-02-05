@@ -22,11 +22,28 @@ class DateService {
         return number.toString().padStart(2, '0');
     }
 
-    formatMinutesAndHour(totalMinutes: number) {
+    formatMinutesAndHour(totalMinutes: number, showTimeMeasurements: boolean = false) {
         const minutes = totalMinutes % 60;
         const hours = Math.floor(totalMinutes / 60);
 
-        return `${this.pad2Number(hours)}:${this.pad2Number(minutes)}`;
+        let timeMeasurements = 'minutes';
+
+        if (hours) {
+            timeMeasurements = 'hours';
+        }
+
+        return showTimeMeasurements
+            ? `${this.pad2Number(hours)}:${this.pad2Number(minutes)} ${timeMeasurements}`
+            : `${this.pad2Number(hours)}:${this.pad2Number(minutes)}`;
+    }
+
+    formatWithOurPeriods(date: string) {
+        let period = 'AM';
+        let hour = Number(date.split(':')[0]);
+
+        if (hour > 12) period = 'PM';
+
+        return `${date} ${period}`;
     }
 }
 export const dateService = new DateService();
