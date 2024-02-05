@@ -4,7 +4,6 @@ import useAuth from '@/hooks/useAuth';
 
 import { dateService } from '@/services/date';
 
-import Table from '@/components/activities/Table';
 import Modal from '@/components/ui/Modal';
 import ActivityForm from '@/components/ui/ActivityForm';
 import useActivity from '@/hooks/useActivity';
