@@ -1,6 +1,7 @@
 import React from 'react';
 
 import useAuth from '@/hooks/useAuth';
+import Icon from '@/assets/icons/test.svg?react';
 
 import { dateService } from '@/services/date';
 
@@ -9,6 +10,7 @@ import ActivityForm from '@/components/ui/ActivityForm';
 import useActivity from '@/hooks/useActivity';
 import useForm from '@/hooks/useForm';
 import ActivityCard from '@/components/activities/ActivityCard';
+import Button from '@/components/ui/Button';
 
 const date = new Date();
 
@@ -75,12 +77,12 @@ const ActivitiesPage: React.FC = () => {
     }, [user.id]);
 
     return (
-        <section className="container mx-auto my-2 mr-2 rounded-lg bg-gray-200">
+        <section className="w-full my-2 mr-2 rounded-lg bg-gray-200">
             {/* selector of day - calendar */}
             Today is: {dateService.getCurrentDayFormated(date)}
-            <button className=" py-1.5 px-2 rounded-lg bg-indigo-500 text-white" onClick={openCreateModal}>
-                + Add activity
-            </button>
+            <Button shape="round" onClick={openCreateModal} appearance="primary">
+                Add activity
+            </Button>
             {user && activities.length ? (
                 <>
                     {activities.map(activity => (

@@ -135,7 +135,6 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
                 onCancel={() => setModalStatus({ ...modalStatus, edit: false })}
                 onConfirm={confirmEdit}
                 confirmText={'Update'}
-                confirmClassName={'bg-amber-500'}
                 cancelButton={null}
             >
                 <div className="mb-6">
