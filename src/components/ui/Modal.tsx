@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 import useMountTransition from '@/hooks/useMountTransition';
 
-import { utilsService } from '@/services/utils';
+import { createPortalRoot } from '@/services/utils';
 import Button from '@/components/ui/Button';
 
 type ModalProps = {
@@ -36,7 +36,7 @@ const Modal: React.FC<ModalProps> = ({
     confirmButton,
 }) => {
     const bodyRef = React.useRef(document.querySelector('body'));
-    const portalRootRef = React.useRef(document.getElementById('portal-root') || utilsService.createPortalRoot());
+    const portalRootRef = React.useRef(document.getElementById('portal-root') || createPortalRoot());
     const isTransitioning = useMountTransition(isOpen, 300);
 
     // Append portal root on mount
