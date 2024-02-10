@@ -3,7 +3,7 @@ import { activityService } from '@/services/activity';
 import { getUserId } from '@/services/supabase';
 import React from 'react';
 // import { useAuth } from './AuthContext';
-import { dateService } from '@/services/date';
+import { getCurrentDayFormated, getTimeSpan } from '@/services/date';
 
 import { ActivityProviderProps } from '@/interface/activity';
 
@@ -29,7 +29,7 @@ export function ActivityProvider({ children }: { children: React.ReactNode }) {
             const result = await activityService.createActivity(params);
 
             const date = new Date();
-            const dateID = dateService.getCurrentDayFormated(date);
+            const dateID = getCurrentDayFormated(date);
 
             if (!result.error) {
                 getActivityList(dateID);
@@ -48,7 +48,7 @@ export function ActivityProvider({ children }: { children: React.ReactNode }) {
             const result = await activityService.deleteActivity(activityID, userID);
 
             const date = new Date();
-            const dateID = dateService.getCurrentDayFormated(date);
+            const dateID = getCurrentDayFormated(date);
 
             if (!result.error) {
                 getActivityList(dateID);
@@ -67,7 +67,7 @@ export function ActivityProvider({ children }: { children: React.ReactNode }) {
             const createdDate = new Date();
             const [hours, minutes] = activityUpdated.begin_time!.split(':');
 
-            const timeSpan = dateService.getTimeSpan(activityUpdated.begin_time!, activityUpdated.end_time!);
+            const timeSpan = getTimeSpan(activityUpdated.begin_time!, activityUpdated.end_time!);
 
             createdDate.setHours(Number(hours));
             createdDate.setMinutes(Number(minutes));
@@ -79,7 +79,7 @@ export function ActivityProvider({ children }: { children: React.ReactNode }) {
             const result = await activityService.editActivity(activityUpdated, activityID, userID);
 
             const date = new Date();
-            const dateID = dateService.getCurrentDayFormated(date);
+            const dateID = getCurrentDayFormated(date);
 
             if (!result.error) {
                 getActivityList(dateID);
