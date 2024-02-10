@@ -73,27 +73,31 @@ const Dropdown: React.FC<DropdownType> = ({ button, menu }) => {
 
       <dialog
         ref={dialogRef}
-        className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        className="absolute left-[-9rem] z-10 mt-2 w-44 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"
         open={openDropdown}
       >
-        <div className="py-1 inline-flex flex-col w-full" role="none">
+        <ul className="py-1 inline-flex flex-col w-full divide-y divide-gray-100">
           {menu.map((item, index) => {
             const { key, label, onClick } = item;
             return (
-              <Button
-                key={key || index}
-                fontWeigth="normal"
-                alignItems="start"
-                onClick={onClick as React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>}
-              >
-                {label}
-              </Button>
+              <li key={key || index}>
+                <Button
+                  fontWeigth="normal"
+                  alignItems="start"
+                  appearance="text"
+                  block
+                  className="hover:bg-gray-100"
+                  onClick={onClick as React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>}
+                >
+                  {label}
+                </Button>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </dialog>
     </div>
   );
