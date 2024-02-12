@@ -3,9 +3,10 @@ import { createPortal } from 'react-dom';
 
 import useMountTransition from '@/hooks/useMountTransition';
 
-import { utilsService } from '@/services/utils';
+import { createPortalRoot } from '@/services/utils';
+import Button from '@/components/ui/Button';
 
-interface ModalProps {
+type ModalProps = {
     children: ReactNode;
     isOpen: boolean;
     onClose: () => void;
@@ -18,8 +19,7 @@ interface ModalProps {
     footer?: null;
     confirmButton?: null;
     cancelButton?: null;
-    confirmClassName?: string;
-}
+};
 
 const Modal: React.FC<ModalProps> = ({
     children,
@@ -34,10 +34,9 @@ const Modal: React.FC<ModalProps> = ({
     footer,
     cancelButton,
     confirmButton,
-    confirmClassName,
 }) => {
     const bodyRef = React.useRef(document.querySelector('body'));
-    const portalRootRef = React.useRef(document.getElementById('portal-root') || utilsService.createPortalRoot());
+    const portalRootRef = React.useRef(document.getElementById('portal-root') || createPortalRoot());
     const isTransitioning = useMountTransition(isOpen, 300);
 
     // Append portal root on mount
@@ -102,8 +101,11 @@ const Modal: React.FC<ModalProps> = ({
                 ${isTransitioning && 'translate-y-0 '} 
                 transition-[transform, opacity] duration-300 motion-reduce:transition-none bg-slate-50 pt-8  ${className && className}`}
                 >
-                    <button
-                        className="absolute after:content-['\00d7'] text-slate-600  rounded-full size-8 right-5 top-2 bg-transparent hover:bg-gray-200 hover:text-slate-600 transition duration-150 text-2xl"
+                    <Button
+                        className="absolute after:content-['\00d7'] text-slate-600 size-8 right-5 top-2 bg-transparent hover:bg-gray-200 hover:text-slate-600 transition duration-150"
+                        appearance="text"
+                        shape="circle"
+                        size="large"
                         onClick={onClose}
                     />
                     {/* //? modal header */}
@@ -118,19 +120,14 @@ const Modal: React.FC<ModalProps> = ({
                     {footer === null ? null : (
                         <div className="flex gap-4 pt-2 pb-3 px-6 border-solid border-t-2 border-gray-100">
                             {cancelButton === null ? null : (
-                                <button onClick={onCancel} className="w-full border-solid border-2 border-slate-300 rounded-md py-1.5">
+                                <Button onClick={onCancel} appearance="secondary" shape="round" block>
                                     {cancelText}
-                                </button>
+                                </Button>
                             )}
                             {confirmButton === null ? null : (
-                                <button
-                                    onClick={onConfirm}
-                                    className={`w-full  rounded-md py-1.5 ${
-                                        confirmClassName ? confirmClassName : ' bg-red-700 text-white'
-                                    }`}
-                                >
+                                <Button onClick={onConfirm} appearance="primary" shape="round" block>
                                     {confirmText}
-                                </button>
+                                </Button>
                             )}
                         </div>
                     )}
