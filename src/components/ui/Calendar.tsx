@@ -1,4 +1,4 @@
-import { ReactNode, Ref, forwardRef } from 'react';
+import React, { ReactNode, Ref, forwardRef } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import ChevronIcon from '@/assets/icons/chevron.svg?react';
 
@@ -8,6 +8,11 @@ type CustomInputProps = {
   currentDate: Date;
   value?: ReactNode;
   onClick?: () => void;
+};
+
+type CalendarType = {
+  setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
+  currentDate: Date;
 };
 
 const CustomInput = forwardRef(({ currentDate, onClick }: CustomInputProps, ref) => (
@@ -20,7 +25,7 @@ const CustomInput = forwardRef(({ currentDate, onClick }: CustomInputProps, ref)
   </button>
 ));
 
-const Calendar = ({ currentDate, setCurrentDate }: any) => {
+const Calendar: React.FC<CalendarType> = ({ currentDate, setCurrentDate }) => {
   return (
     <ReactDatePicker
       todayButton="Go today"

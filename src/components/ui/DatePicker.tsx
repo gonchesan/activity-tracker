@@ -1,32 +1,22 @@
-import { getAbbreviationDay, pad2Number } from '@/services/date';
 import React from 'react';
-import Button from './Button';
 import './css/react-datepicker.css';
-// https://reactdatepicker.com/
+
+import { getAbbreviationDay, pad2Number } from '@/services/date';
+
 import ChevronLeftIcon from '@/assets/icons/chevrons-left.svg?react';
 import ChevronRigthIcon from '@/assets/icons/chevrons-right.svg?react';
 
 import useDatePicker from '@/hooks/useDatePicker';
+
+import Button from './Button';
 import Calendar from './Calendar';
 
-const DatePicker = ({ openCreateModal }: { openCreateModal: () => void }) => {
-  const { setCurrentDate, currentDate, surroundingDates } = useDatePicker();
+type DatePickerType = {
+  openCreateModal: () => void;
+};
 
-  // Deberia de tener:
-  /**
-   * - [X] Si el dia seleccionado es el actual, mostrar "Today"
-   * - [X] Si el dia seleccionado NO es el actual, mostrar un boton Go today =>
-   *  - [X] En el selector de dia, poder tener un slider
-   *    - [X] Mostrar 5 dias y dos botones en los costados
-   *  - [X] En el selecor del mes, mostrar January, 2021 ˅
-   *    - [X] Mostrar opciones para seleccionar el calendario
-   *  - [X] A la misma altura del dropdown mostrar boton [+] para agregar una tarea nueva
-   *
-   *
-   *  Referencias:
-   * https://i.pinimg.com/originals/7f/5b/f8/7f5bf89718e199a8c54477181d03b2a0.jpg
-   * https://cdn.dribbble.com/users/1828625/screenshots/14991069/media/72390d6312ed9eaa3d12f23bfaa4cdbc.png?resize=1000x750&vertical=center
-   */
+const DatePicker: React.FC<DatePickerType> = ({ openCreateModal }) => {
+  const { setCurrentDate, currentDate, surroundingDates } = useDatePicker();
 
   function shiftCurrentDate(direction: 'forward' | 'backward') {
     const daysToAdd = direction === 'forward' ? 1 : -1;
