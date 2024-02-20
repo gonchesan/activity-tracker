@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Activity } from '@/interface/activity';
 
-import { formatMinutesAndHour, formatWithOurPeriods } from '@/services/date';
+import { formatMinutesAndHour, formatWithHourPeriods } from '@/services/date';
 
 import useForm from '@/hooks/useForm';
 import useActivity from '@/hooks/useActivity';
@@ -93,7 +93,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
                 d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
               />
             </svg>
-            {formatWithOurPeriods(begin_time)} - {formatWithOurPeriods(end_time)}
+            {formatWithHourPeriods(begin_time)} - {formatWithHourPeriods(end_time)}
           </span>
           <span className="flex items-center gap-2 text-blue-600 font-medium text-sm" title="Time span">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className=" h-4 w-4">
