@@ -8,7 +8,7 @@ export type ButtonAppearance = 'primary' | 'secondary' | 'link' | 'text' | 'defa
 type ButtonSize = 'large' | 'middle' | 'small';
 type ButtonWeigth = 'bold' | 'default' | 'normal';
 type ButtonAlign = 'center' | 'start' | 'end';
-export interface ButtonType extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonType extends React.ComponentProps<'button'> {
   icon?: React.ReactNode;
   shape?: ButtonShape;
   block?: boolean;
@@ -41,8 +41,11 @@ const Button: React.FC<ButtonType> = ({
     (onClick as React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>)?.(event);
   }
 
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+
   return (
     <button
+      ref={buttonRef}
       {...props}
       className={classnames(
         'inline-flex  items-center gap-x-1.5 ring-1 ring-inset transition duration-200',

@@ -2,21 +2,24 @@ import React from 'react';
 
 import useAuth from '@/hooks/useAuth';
 
-import { formatMinutesAndHour, getCurrentDayFormated, getTimeSpan } from '@/services/date';
+import { formatMinutesAndHour, getCurrentDayFormated, getTotalMinutesSpan } from '@/services/date';
 
 import Modal from '@/components/ui/Modal';
 import ActivityForm from '@/components/ui/ActivityForm';
 import useActivity from '@/hooks/useActivity';
 import useForm from '@/hooks/useForm';
 import ActivityCard from '@/components/activities/ActivityCard';
-import Button from '@/components/ui/Button';
+import DatePicker from '@/components/ui/DatePicker';
+import useDatePicker from '@/hooks/useDatePicker';
 
 const date = new Date();
 
 const ActivitiesPage: React.FC = () => {
   const { user } = useAuth();
-  const { insertActivity, activities, getActivityList } = useActivity();
+  const { isLoading, insertActivity, activities, getActivityList } = useActivity();
   const { getValues, setValues } = useForm();
+  const { currentDate } = useDatePicker();
+  // const [currentDate, setCurrentDate] = React.useState<Date>(new Date());
 
   const [modalStatus, setModalStatus] = React.useState({ create: false });
 
@@ -32,7 +35,7 @@ const ActivitiesPage: React.FC = () => {
   function confirmCreate() {
     const { begin_time, end_time, description } = getValues();
 
-    const timeSpan = getTimeSpan(begin_time, end_time);
+    const timeSpan = getTotalMinutesSpan(begin_time, end_time);
     const dateID = getCurrentDayFormated(date);
     const createdDate = new Date();
 
@@ -68,27 +71,28 @@ const ActivitiesPage: React.FC = () => {
   }
 
   React.useEffect(() => {
-    const date = new Date();
+    if (currentDate) {
+      const dateID = getCurrentDayFormated(currentDate);
 
-    const dateID = getCurrentDayFormated(date);
-
-    user.id && getActivityList(dateID);
-  }, [user.id]);
+      getActivityList(dateID);
+    }
+  }, [currentDate]);
 
   return (
     <section className="w-full my-2 mr-2 rounded-lg bg-gray-200">
       {/* selector of day - calendar */}
-      Today is: {getCurrentDayFormated(date)}
-      <Button shape="round" onClick={openCreateModal} appearance="primary">
-        Add activity
-      </Button>
-      {user && activities.length ? (
-        <>
-          {activities.map(activity => (
-            <ActivityCard key={activity.id} activity={activity} />
-          ))}
-        </>
-      ) : null}
+      <DatePicker openCreateModal={openCreateModal} />
+      {!isLoading ? (
+        user && activities.length ? (
+          <>
+            {activities.map(activity => (
+              <ActivityCard key={activity.id} activity={activity} />
+            ))}
+          </>
+        ) : null
+      ) : (
+        <p>loading...</p>
+      )}
       <Modal
         isOpen={modalStatus.create}
         onClose={() => setModalStatus({ ...modalStatus, create: false })}

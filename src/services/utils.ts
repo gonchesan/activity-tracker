@@ -33,4 +33,8 @@ function isChildOf(elem: HTMLElement, parent: HTMLElement) {
   return false;
 }
 
-export { uuidv4, createPortalRoot, createWrapperAndAppendToBody, isChildOf };
+function pad2Number(number: number) {
+  return number.toString().padStart(2, '0');
+}
+
+export { uuidv4, createPortalRoot, createWrapperAndAppendToBody, isChildOf, pad2Number };
