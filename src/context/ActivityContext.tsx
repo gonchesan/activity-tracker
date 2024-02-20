@@ -3,97 +3,116 @@ import { activityService } from '@/services/activity';
 import { getUserId } from '@/services/supabase';
 import React from 'react';
 // import { useAuth } from './AuthContext';
-import { getCurrentDayFormated, getTimeSpan } from '@/services/date';
+import { getCurrentDayFormated, getTotalMinutesSpan } from '@/services/date';
 
-import { ActivityProviderProps } from '@/interface/activity';
+import { ActivityContextProps } from '@/interface/activity';
+import useDatePicker from '@/hooks/useDatePicker';
 
-export const ActivityContext = React.createContext<ActivityProviderProps | null>(null);
+export const ActivityContext = React.createContext<ActivityContextProps | null>(null);
 
 export function ActivityProvider({ children }: { children: React.ReactNode }) {
-    const [activities, setActivities] = React.useState<Activity[]>([]);
+  const [activities, setActivities] = React.useState<Activity[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const { currentDate } = useDatePicker();
 
-    async function getActivityList(date: string) {
-        try {
-            const userID = (await getUserId()) as string;
+  async function getActivityList(date: string) {
+    setIsLoading(true);
 
-            const result = await activityService.getActivityList(date, userID);
-            setActivities(result);
-        } catch (error) {
-            console.log('🚀 ~ getAll ~ error:', error);
-        }
+    try {
+      const userID = (await getUserId()) as string;
+
+      const result = await activityService.getActivityList(date, userID);
+      setActivities(result);
+    } catch (error) {
+      console.log('🚀 ~ getAll ~ error:', error);
+    } finally {
+      setIsLoading(false);
     }
+  }
 
-    async function insertActivity(params: Partial<Activity>) {
-        console.log('🚀 ~ insertActivity ~ params:', params);
-        try {
-            const result = await activityService.createActivity(params);
+  async function insertActivity(params: Partial<Activity>) {
+    setIsLoading(true);
 
-            const date = new Date();
-            const dateID = getCurrentDayFormated(date);
+    try {
+      const result = await activityService.createActivity(params);
 
-            if (!result.error) {
-                getActivityList(dateID);
-            }
+      const date = currentDate ? currentDate : new Date();
+      const dateID = getCurrentDayFormated(date);
 
-            return result;
-        } catch (error) {
-            console.log('🚀 ~ insertActivity ~ error:', error);
-        }
+      if (!result.error) {
+        getActivityList(dateID);
+      }
+
+      return result;
+    } catch (error) {
+      console.log('🚀 ~ insertActivity ~ error:', error);
+    } finally {
+      setIsLoading(false);
     }
+  }
 
-    async function deleteActivity(activityID: string) {
-        try {
-            const userID = (await getUserId()) as string;
+  async function deleteActivity(activityID: string) {
+    setIsLoading(true);
+    try {
+      const userID = (await getUserId()) as string;
 
-            const result = await activityService.deleteActivity(activityID, userID);
+      const result = await activityService.deleteActivity(activityID, userID);
 
-            const date = new Date();
-            const dateID = getCurrentDayFormated(date);
+      const date = currentDate ? currentDate : new Date();
+      const dateID = getCurrentDayFormated(date);
 
-            if (!result.error) {
-                getActivityList(dateID);
-            }
+      if (!result.error) {
+        getActivityList(dateID);
+      }
 
-            return result;
-        } catch (error) {
-            console.log('🚀 ~ insertActivity ~ error:', error);
-        }
+      return result;
+    } catch (error) {
+      console.log('🚀 ~ insertActivity ~ error:', error);
+    } finally {
+      setIsLoading(false);
     }
+  }
 
-    async function editActivity(activityUpdated: Partial<Activity>, activityID: string) {
-        try {
-            const userID = (await getUserId()) as string;
+  async function editActivity(activityUpdated: Partial<Activity>, activityID: string) {
+    setIsLoading(true);
 
-            const createdDate = new Date();
-            const [hours, minutes] = activityUpdated.begin_time!.split(':');
+    try {
+      const userID = (await getUserId()) as string;
 
-            const timeSpan = getTimeSpan(activityUpdated.begin_time!, activityUpdated.end_time!);
+      const createdDate = new Date();
+      const [hours, minutes] = activityUpdated.begin_time!.split(':');
 
-            createdDate.setHours(Number(hours));
-            createdDate.setMinutes(Number(minutes));
+      const timeSpan = getTotalMinutesSpan(activityUpdated.begin_time!, activityUpdated.end_time!);
 
-            activityUpdated.created_date = createdDate.toISOString();
+      createdDate.setHours(Number(hours));
+      createdDate.setMinutes(Number(minutes));
 
-            activityUpdated.time_span = timeSpan;
+      activityUpdated.created_date = createdDate.toISOString();
 
-            const result = await activityService.editActivity(activityUpdated, activityID, userID);
+      activityUpdated.time_span = timeSpan;
 
-            const date = new Date();
-            const dateID = getCurrentDayFormated(date);
+      const result = await activityService.editActivity(activityUpdated, activityID, userID);
 
-            if (!result.error) {
-                getActivityList(dateID);
-            }
+      const date = currentDate ? currentDate : new Date();
+      const dateID = getCurrentDayFormated(date);
 
-            return result;
-        } catch (error) {
-            console.log('🚀 ~ insertActivity ~ error:', error);
-        }
+      if (!result.error) {
+        getActivityList(dateID);
+      }
+
+      return result;
+    } catch (error) {
+      console.log('🚀 ~ insertActivity ~ error:', error);
+    } finally {
+      setIsLoading(false);
     }
+  }
 
-    return (
-        <ActivityContext.Provider value={{ activities, getActivityList, insertActivity, deleteActivity, editActivity }}>
-            {children}
-        </ActivityContext.Provider>
-    );
+  return (
+    <ActivityContext.Provider
+      value={{ isLoading, activities, getActivityList, insertActivity, deleteActivity, editActivity }}
+    >
+      {children}
+    </ActivityContext.Provider>
+  );
 }
