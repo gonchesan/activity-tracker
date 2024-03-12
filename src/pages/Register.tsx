@@ -6,7 +6,7 @@ import useAuth from '@/hooks/useAuth';
 
 import GoogleIcon from '@/assets/icons/google.svg?react';
 
-import { SignInType } from '@/interface/auth';
+import { SignInType } from '@/models/auth';
 
 import Button from '@/components/ui/Button';
 
