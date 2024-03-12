@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { DatePickerContextProps } from '@/interface/datePicker';
+import { DatePickerContextProps } from '@/models/datePicker';
 
 export const DatePickerContext = React.createContext<DatePickerContextProps>(null);
 

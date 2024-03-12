@@ -37,7 +37,6 @@ const Button: React.FC<ButtonType> = ({
   ...props
 }) => {
   function handleClick(event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>) {
-    event.preventDefault();
     (onClick as React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>)?.(event);
   }
 

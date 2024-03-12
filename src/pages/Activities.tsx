@@ -4,22 +4,19 @@ import useAuth from '@/hooks/useAuth';
 
 import { formatMinutesAndHour, getCurrentDayFormated, getTotalMinutesSpan } from '@/services/date';
 
-import Modal from '@/components/ui/Modal';
 import ActivityForm from '@/components/ui/ActivityForm';
 import useActivity from '@/hooks/useActivity';
 import useForm from '@/hooks/useForm';
 import ActivityCard from '@/components/activities/ActivityCard';
 import DatePicker from '@/components/ui/DatePicker';
 import useDatePicker from '@/hooks/useDatePicker';
-
-const date = new Date();
+import Drawer from '@/components/ui/Drawer';
 
 const ActivitiesPage: React.FC = () => {
   const { user } = useAuth();
   const { isLoading, insertActivity, activities, getActivityList } = useActivity();
   const { getValues, setValues } = useForm();
   const { currentDate } = useDatePicker();
-  // const [currentDate, setCurrentDate] = React.useState<Date>(new Date());
 
   const [modalStatus, setModalStatus] = React.useState({ create: false });
 
@@ -36,21 +33,17 @@ const ActivitiesPage: React.FC = () => {
     const { begin_time, end_time, description } = getValues();
 
     const timeSpan = getTotalMinutesSpan(begin_time, end_time);
-    const dateID = getCurrentDayFormated(date);
-    const createdDate = new Date();
-
     const [hours, minutes] = begin_time.split(':');
 
-    createdDate.setHours(hours);
-    createdDate.setMinutes(minutes);
+    currentDate.setHours(hours);
+    currentDate.setMinutes(minutes);
 
     const params = {
       begin_time: begin_time,
       end_time: end_time,
       description: description,
-      created_date: createdDate.toISOString(),
+      updated_date: currentDate.toISOString(),
       time_span: timeSpan,
-      date_id: dateID,
       user_id: user.id,
     };
 
@@ -79,7 +72,7 @@ const ActivitiesPage: React.FC = () => {
   }, [currentDate]);
 
   return (
-    <section className="w-full my-2 mr-2 rounded-lg bg-gray-200">
+    <section className="w-full px-2 mt-2 rounded-lg bg-gray-200">
       {/* selector of day - calendar */}
       <DatePicker openCreateModal={openCreateModal} />
       {!isLoading ? (
@@ -93,10 +86,11 @@ const ActivitiesPage: React.FC = () => {
       ) : (
         <p>loading...</p>
       )}
-      <Modal
+      <Drawer
+        title="Add activity"
         isOpen={modalStatus.create}
         onClose={() => setModalStatus({ ...modalStatus, create: false })}
-        className={'lg:w-4/12 md:w-8/12 sm:w-10/12 w-10/12'}
+        className={'lg:w-4/12 md:w-8/12 sm:w-full w-full'}
         onCancel={() => setModalStatus({ ...modalStatus, create: false })}
         onConfirm={confirmCreate}
         confirmText={'Create'}
@@ -105,7 +99,7 @@ const ActivitiesPage: React.FC = () => {
         <div className="mb-6">
           <ActivityForm />
         </div>
-      </Modal>
+      </Drawer>
     </section>
   );
 };

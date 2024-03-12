@@ -6,8 +6,7 @@ export type Activity = {
   end_time: string;
   description: string;
   time_span: number;
-  created_date: string;
-  dateID: string;
+  updated_date: string;
   user_id: string;
   category: string;
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Activity } from '@/interface/activity';
+import { Activity } from '@/models/activity';
 
 import { formatMinutesAndHour, formatWithHourPeriods } from '@/services/date';
 
@@ -12,6 +12,7 @@ import Modal from '@/components/ui/Modal';
 import Dropdown, { ItemMenu } from '@/components/ui/Dropdown';
 
 import ElipsisIcon from '@/assets/icons/elipsis.svg?react';
+import Drawer from '../ui/Drawer';
 
 type ActivityCardProps = { activity: Activity };
 
@@ -65,7 +66,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-sm py-2 px-4 max-w-72 mb-2 relative after:absolute after:top-[calc(100%/6)] after:left-0  after:border-l-4 after:border-blue-500 after:border-t-transparent after:border-t-solid after:border-t-4 after:border-b-transparent after:border-b-solid after:border-b-4 after:h-4/6">
+      <div className="bg-white rounded-xl shadow-sm py-2 px-4 md:max-w-72 mb-2 relative after:absolute after:top-[calc(100%/6)] after:left-0  after:border-l-4 after:border-blue-500 after:border-t-transparent after:border-t-solid after:border-t-4 after:border-b-transparent after:border-b-solid after:border-b-4 after:h-4/6">
         <aside className="relative">
           <div className="absolute right-0 origin-top-right text-right">
             <Dropdown
@@ -82,7 +83,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
           <span className="uppercase text-[10.5px] font-medium bg-blue-200 text-blue-600 px-2.5 py-1 rounded-full">
             {category}
           </span>
-          <h2 className="text-lg font-semibold">{description}</h2>
+          <h2 className="text-lg font-semibold text-ellipsis">{description}</h2>
           <hr className="border-t border-solid border-slate-300 my-2" />
         </aside>
         <div>
@@ -118,10 +119,11 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
       >
         <p>Are you sure you want to delete this activity?</p>
       </Modal>
-      <Modal
+      <Drawer
+        title="Edit activity"
         isOpen={modalStatus.edit}
         onClose={() => setModalStatus({ ...modalStatus, edit: false })}
-        className={'lg:w-4/12 md:w-8/12 sm:w-10/12 w-10/12'}
+        className={'lg:w-4/12 md:w-8/12 sm:w-full w-full'}
         onCancel={() => setModalStatus({ ...modalStatus, edit: false })}
         onConfirm={confirmEdit}
         confirmText={'Update'}
@@ -130,7 +132,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
         <div className="mb-6">
           <ActivityForm />
         </div>
-      </Modal>
+      </Drawer>
     </>
   );
 };

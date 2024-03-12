@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { AuthContextProvider } from '@/context/AuthContext';
-import { ActivityProvider } from '@/context/ActivityContext';
-import { FormProvider } from '@/context/FormContext';
+import { AuthContextProvider } from '@/contexts/AuthContext';
+import { ActivityProvider } from '@/contexts/ActivityContext';
+import { FormProvider } from '@/contexts/FormContext';
 
 import Layout from '@/components/ui/Layout';
 
@@ -10,7 +10,7 @@ import ActivitiesPage from '@/pages/Activities';
 import LoginPage from '@/pages/Login';
 import ErrorPage from '@/pages/Error';
 import RegisterPage from '@/pages/Register';
-import { DatePickerProvider } from './context/DatePickerContext';
+import { DatePickerProvider } from './contexts/DatePickerContext';
 
 function App() {
   return (
