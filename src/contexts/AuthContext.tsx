@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserMetadata } from '@supabase/supabase-js';
 import { supabase } from '@/services/supabase';
 
-import { AuthContextProps, SignInType } from '@/interface/auth';
+import { AuthContextProps, SignInType } from '@/models/auth';
 
 export const AuthContext = React.createContext<AuthContextProps | undefined>(undefined);
 

@@ -79,7 +79,7 @@ const ActivitiesPage: React.FC = () => {
   }, [currentDate]);
 
   return (
-    <section className="w-full my-2 mr-2 rounded-lg bg-gray-200">
+    <section className="w-full mx-2 mt-2 rounded-lg bg-gray-200">
       {/* selector of day - calendar */}
       <DatePicker openCreateModal={openCreateModal} />
       {!isLoading ? (

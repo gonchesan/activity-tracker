@@ -1,11 +1,12 @@
-import { Activity } from '@/interface/activity';
+import React from 'react';
+import moment from 'moment-timezone';
+
 import { activityService } from '@/services/activity';
 import { getUserId } from '@/services/supabase';
-import React from 'react';
-// import { useAuth } from './AuthContext';
 import { getCurrentDayFormated, getTotalMinutesSpan } from '@/services/date';
 
-import { ActivityContextProps } from '@/interface/activity';
+import { Activity } from '@/models/activity';
+import { ActivityContextProps } from '@/models/activity';
 import useDatePicker from '@/hooks/useDatePicker';
 
 export const ActivityContext = React.createContext<ActivityContextProps | null>(null);
@@ -78,17 +79,16 @@ export function ActivityProvider({ children }: { children: React.ReactNode }) {
 
     try {
       const userID = (await getUserId()) as string;
-
-      const createdDate = new Date();
       const [hours, minutes] = activityUpdated.begin_time!.split(':');
-
       const timeSpan = getTotalMinutesSpan(activityUpdated.begin_time!, activityUpdated.end_time!);
 
-      createdDate.setHours(Number(hours));
-      createdDate.setMinutes(Number(minutes));
+      const formattedDate = moment(currentDate)
+        .hours(Number(hours))
+        .minutes(Number(minutes))
+        .tz('America/Argentina/Buenos_Aires')
+        .format();
 
-      activityUpdated.created_date = createdDate.toISOString();
-
+      activityUpdated.updated_date = formattedDate;
       activityUpdated.time_span = timeSpan;
 
       const result = await activityService.editActivity(activityUpdated, activityID, userID);

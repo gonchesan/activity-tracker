@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { FormContextProps } from '@/interface/form';
+import { FormContextProps } from '@/models/form';
 
 export const FormContext = React.createContext<FormContextProps>(null);
 
