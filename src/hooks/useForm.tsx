@@ -1,9 +1,9 @@
-import { FormContext } from '@/context/FormContext';
+import { FormContext } from '@/contexts/FormContext';
 import React from 'react';
 
 export default function useForm() {
-    const formContext = React.useContext(FormContext);
+  const formContext = React.useContext(FormContext);
 
-    if (!formContext) throw new Error('FormContext need a Provider');
-    return formContext;
+  if (!formContext) throw new Error('FormContext need a Provider');
+  return formContext;
 }
