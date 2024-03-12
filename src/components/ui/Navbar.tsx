@@ -1,8 +1,5 @@
 import React from 'react';
 import useAuth from '@/hooks/useAuth';
-import Button from '@/components/ui/Button';
-
-import LogOutIcon from '@/assets/icons/logout.svg?react';
 
 const Navbar: React.FC = () => {
   const { user } = useAuth();
