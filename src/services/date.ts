@@ -23,7 +23,7 @@ function getAbbreviationDay(day: number) {
 
 function getCurrentDayFormated(date: Date) {
   //return @string date formatted: DD/MM/YYYY
-  const dateFormated = date.toLocaleDateString('en-GB');
+  const dateFormated = date.toLocaleDateString('en-CA');
 
   return dateFormated;
 }
