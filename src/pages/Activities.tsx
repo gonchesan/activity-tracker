@@ -4,14 +4,17 @@ import useAuth from '@/hooks/useAuth';
 
 import { formatMinutesAndHour, getCurrentDayFormated, getTotalMinutesSpan } from '@/services/date';
 
-import ActivityForm from '@/components/ui/ActivityForm';
 import useActivity from '@/hooks/useActivity';
 import useForm from '@/hooks/useForm';
-import DatePicker from '@/components/ui/DatePicker';
 import useDatePicker from '@/hooks/useDatePicker';
+
+import DatePicker from '@/components/ui/DatePicker';
+import ActivityForm from '@/components/ui/ActivityForm';
 import Drawer from '@/components/ui/Drawer';
-import TimeLine from '@/components/activities/TimeLine';
-import EmptyState from '@/components/activities/EmptyState';
+import SkeletonCards from '@/components/activities/SkeletonCards';
+
+const TimeLine = React.lazy(() => import('@/components/activities/TimeLine'));
+const EmptyState = React.lazy(() => import('@/components/activities/EmptyState'));
 
 const ActivitiesPage: React.FC = () => {
   const { user } = useAuth();
@@ -76,15 +79,17 @@ const ActivitiesPage: React.FC = () => {
     <section className="w-full h-full overflow-auto max-h-full mx-auto container mt-4 pb-4 bg-gray-200 relative">
       {/* selector of day - calendar */}
       <DatePicker openCreateModal={openCreateModal} />
-      {!isLoading ? (
-        user && activities.length ? (
-          <TimeLine bulletPoints={activities} />
+      <React.Suspense fallback={<SkeletonCards />}>
+        {!isLoading ? (
+          user && activities.length ? (
+            <TimeLine bulletPoints={activities} />
+          ) : (
+            <EmptyState openCreateModal={openCreateModal} />
+          )
         ) : (
-          <EmptyState openCreateModal={openCreateModal} />
-        )
-      ) : (
-        <p>loading...</p>
-      )}
+          <SkeletonCards />
+        )}
+      </React.Suspense>
       <Drawer
         title="Add activity"
         isOpen={modalStatus.create}
