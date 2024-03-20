@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
 
   return (
     user && (
-      <nav className="fixed bg-sky-950 w-[calc(100%-1rem)] bottom-0 rounded-lg m-2 z-10 flex md:flex-col md:justify-between">
+      <nav className="fixed bg-sky-950 w-[calc(100%-1rem)] bottom-0 rounded-lg m-2 z-10 flex">
         <button className="p-3 m-3 text-teal-600">
           <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
             <path
