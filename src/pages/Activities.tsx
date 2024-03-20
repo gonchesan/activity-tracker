@@ -7,10 +7,11 @@ import { formatMinutesAndHour, getCurrentDayFormated, getTotalMinutesSpan } from
 import ActivityForm from '@/components/ui/ActivityForm';
 import useActivity from '@/hooks/useActivity';
 import useForm from '@/hooks/useForm';
-import ActivityCard from '@/components/activities/ActivityCard';
 import DatePicker from '@/components/ui/DatePicker';
 import useDatePicker from '@/hooks/useDatePicker';
 import Drawer from '@/components/ui/Drawer';
+import TimeLine from '@/components/activities/TimeLine';
+import EmptyState from '@/components/activities/EmptyState';
 
 const ActivitiesPage: React.FC = () => {
   const { user } = useAuth();
@@ -72,17 +73,15 @@ const ActivitiesPage: React.FC = () => {
   }, [currentDate]);
 
   return (
-    <section className="w-full px-2 mt-2 rounded-lg bg-gray-200">
+    <section className="w-full h-full overflow-auto max-h-full mx-auto container mt-4 pb-4 bg-gray-200 relative">
       {/* selector of day - calendar */}
       <DatePicker openCreateModal={openCreateModal} />
       {!isLoading ? (
         user && activities.length ? (
-          <>
-            {activities.map(activity => (
-              <ActivityCard key={activity.id} activity={activity} />
-            ))}
-          </>
-        ) : null
+          <TimeLine bulletPoints={activities} />
+        ) : (
+          <EmptyState openCreateModal={openCreateModal} />
+        )
       ) : (
         <p>loading...</p>
       )}

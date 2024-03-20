@@ -1,21 +1,20 @@
 import React from 'react';
 
 import { Outlet } from 'react-router-dom';
-import Navbar from './Navbar';
-import UserDropdown from './UserDropdown';
-
-import NavbarIcon from '@/assets/icons/navbar-icon.svg?react';
+import Navbar from '@/components/ui/Navbar';
+import Topbar from '@/components/ui/Topbar';
 
 const Layout: React.FC = () => {
   return (
-    <div className="mx-auto h-screen w-screen overflow-hidden bg-white">
-      <aside className="flex justify-between items-center px-4">
-        <NavbarIcon />
-        <UserDropdown />
-      </aside>
-      <Outlet />
-      <Navbar />
-    </div>
+    <>
+      <div className="mx-auto w-screen bg-white overflow-y-hidden h-screen">
+        <Topbar />
+        <main className="h-[calc(100vh-9.25rem)]">
+          <Outlet />
+        </main>
+        <Navbar />
+      </div>
+    </>
   );
 };
 

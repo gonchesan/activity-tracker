@@ -66,7 +66,10 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-sm py-2 px-4 md:max-w-72 mb-2 relative after:absolute after:top-[calc(100%/6)] after:left-0  after:border-l-4 after:border-blue-500 after:border-t-transparent after:border-t-solid after:border-t-4 after:border-b-transparent after:border-b-solid after:border-b-4 after:h-4/6">
+      <div
+        className="bg-white rounded-xl shadow-sm py-2 px-4 md:max-w-72 mb-2 relative after:absolute after:top-[calc(100%/6)] after:left-0  after:border-l-4 after:border-blue-500 after:border-t-transparent after:border-t-solid after:border-t-4 after:border-b-transparent after:border-b-solid after:border-b-4 after:h-4/6"
+        onClick={() => openEditModal(activity)}
+      >
         <aside className="relative">
           <div className="absolute right-0 origin-top-right text-right">
             <Dropdown
