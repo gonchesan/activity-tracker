@@ -24,7 +24,7 @@ const DatePicker: React.FC<DatePickerType> = ({ openCreateModal }) => {
   }
 
   return (
-    <div className="bg-white  rounded-xl ring-1 ring-slate-300 shadow-sm">
+    <div className="sticky top-0 z-30 bg-white  rounded-xl ring-1 ring-slate-300 shadow-sm">
       <aside className="flex items-start justify-between border-b border-b-gray-200 border-solid px-4 pt-3 pb-1">
         <div className="flex flex-col items-start">
           <Calendar currentDate={currentDate} setCurrentDate={setCurrentDate} />
