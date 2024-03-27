@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { UserMetadata } from '@supabase/supabase-js';
 import { supabase } from '@/services/supabase';
@@ -8,6 +9,7 @@ import { AuthContextProps, SignInType } from '@/models/auth';
 export const AuthContext = React.createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const navigate = useNavigate();
   const [user, setUser] = React.useState<UserMetadata>([]);
 
   async function signInWithGoogle() {
@@ -53,8 +55,10 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   React.useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(async (_, session) => {
       if (session == undefined) {
+        navigate('/login', { replace: true });
       } else {
         setUser({ ...session?.user, ...session?.user.user_metadata, id: session?.user.id });
+        navigate('/home', { replace: true });
       }
     });
     return () => {

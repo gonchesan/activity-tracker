@@ -6,7 +6,6 @@ import { FormProvider } from '@/contexts/FormContext';
 import { DatePickerProvider } from '@/contexts/DatePickerContext';
 
 import Layout from '@/components/ui/Layout';
-import PublicPages from '@/components/ui/PublicPages';
 
 import ActivitiesPage from '@/pages/Activities';
 import LoginPage from '@/pages/Login';
@@ -17,24 +16,22 @@ function App() {
   return (
     <AuthContextProvider>
       <Routes>
-        <Route element={<PublicPages />}>
-          <Route
-            path="/login"
-            element={
-              <FormProvider>
-                <LoginPage />
-              </FormProvider>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <FormProvider>
-                <RegisterPage />
-              </FormProvider>
-            }
-          />
-        </Route>
+        <Route
+          path="/login"
+          element={
+            <FormProvider>
+              <LoginPage />
+            </FormProvider>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <FormProvider>
+              <RegisterPage />
+            </FormProvider>
+          }
+        />
 
         <Route element={<Layout />}>
           <Route
