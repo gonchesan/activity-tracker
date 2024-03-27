@@ -6,7 +6,7 @@ export const DatePickerContext = React.createContext<DatePickerContextProps>(nul
 function getSurroundingDates(currentDate: Date) {
   const surroundingDates = [];
 
-  for (let i = -2; surroundingDates.length < 5; i++) {
+  for (let i = -3; surroundingDates.length < 7; i++) {
     let date = new Date(currentDate);
     date.setDate(currentDate.getDate() + i);
     surroundingDates.push(date);
