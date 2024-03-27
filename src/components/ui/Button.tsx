@@ -61,8 +61,8 @@ const Button: React.FC<ButtonType> = ({
         { 'disabled:cursor-not-allowed': disabled || loading },
         //@ appearance
         { 'bg-white text-gray-900 ring-gray-300 hover:bg-gray-50 shadow-sm': appearance === 'default' },
-        { 'bg-teal-600 text-gray-100 ring-gray-300 hover:bg-teal-500 shadow-sm': appearance === 'primary' },
-        { 'bg-gray-900 text-gray-100 ring-transparent hover:bg-gray-800 shadow-sm': appearance === 'secondary' },
+        { 'bg-gray-900 text-gray-100 ring-gray-300 hover:bg-gray-700 shadow-sm': appearance === 'primary' },
+        { 'bg-white text-gray-900 ring-gray-300 hover:bg-gray-800 shadow-sm': appearance === 'secondary' },
         { 'bg-transparent text-teal-600 ring-transparent hover:text-teal-500': appearance === 'link' },
         { 'bg-transparent text-gray-900 ring-transparent': appearance === 'text' },
         //@ sizes
